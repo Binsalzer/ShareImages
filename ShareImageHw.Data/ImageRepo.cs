@@ -29,7 +29,7 @@ namespace ShareImageHw.Data
             SqlConnection con = new(_connection);
             var cmd = con.CreateCommand();
             cmd.CommandText = @"INSERT INTO Images
-                                VALUES (@path, @password, 0) SELECT SCOPE_IDENTITY()";
+                                VALUES (@path, @password, 1) SELECT SCOPE_IDENTITY()";
             cmd.Parameters.AddWithValue("@path", image.Path);
             cmd.Parameters.AddWithValue("@password", image.Password);
             con.Open();
@@ -56,6 +56,19 @@ namespace ShareImageHw.Data
                 Password = (string)reader["Password"],
                 ViewCount = (int)reader["ViewCount"]
             };
+        }
+
+        public void UpdateViewCount(int id, int viewCount)
+        {
+            SqlConnection con = new(_connection);
+            var cmd = con.CreateCommand();
+            cmd.CommandText = @"UPDATE Images SET ViewCount =@viewCount
+                                WHERE Id = @id";
+
+            cmd.Parameters.AddWithValue("@id", id);
+            cmd.Parameters.AddWithValue("@viewCount", viewCount);
+            con.Open();
+            cmd.ExecuteNonQuery();
         }
     }
 }

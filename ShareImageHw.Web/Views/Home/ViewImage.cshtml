@@ -1,10 +1,71 @@
 ﻿@model ViewImageViewModel
+@if (!Model.Authenticated)
+{
+    <div b-wzwicsxrru class="container">
+        <main b-wzwicsxrru role="main" class="pb-3">
+
+            <div class="row">
+                <div class="col-md-6 offset-md-3 bg-light p-4 rounded shadow">
+                    <h4>Please enter the password for this image:</h4>
+                    <form method="post">
+                        <input type="hidden" name="id" value="@Model.Image.Id" />
+                        <input type="text" class="form-control" placeholder="Password" name="password" />
+                        <br />
+                        <button class="btn btn-primary w-100">Submit</button>
+                        <input name="__RequestVerificationToken" type="hidden" value="CfDJ8NjKgQYblgJMgX6562dFMTFeS76M4x56gegGsJPfGDY6viFUnQlCXpt9GQMplMMoWYRD5Wk9vW0gfM0-NVcC01iViqzeY7YJXEnPpbwu3yRJBe1_qZsjMiBm6Hz6luTbE1nomDJOdHxjzR15Jd-5ASc" />
+                    </form>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+}
+else
+{
+    <div b-wzwicsxrru class="container">
+        <main b-wzwicsxrru role="main" class="pb-3">
+
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <img src="/uploads/@Model.Image.Path" style="width: 800px;" />
+                    <br />
+                    <h3>Views: @Model.Image.ViewCount</h3>
+                </div>
+            </div>
+
+        </main>
+    </div>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div b-wzwicsxrru class="container">
     <main b-wzwicsxrru role="main" class="pb-3">
 
         <div class="row">
             <div class="col-md-8 offset-md-2">
-                <img src="@Model.Image.Path" style="width: 800px;" />
+                <img src="/uploads/@Model.Image.Path" style="width: 800px;" />
                 <br />
                 <h3>Views: @Model.Image.ViewCount</h3>
             </div>
