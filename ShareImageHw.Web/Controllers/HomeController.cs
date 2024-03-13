@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AspNetCore;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 using ShareImageHw.Data;
 using ShareImageHw.Web.Models;
 using System.Diagnostics;
@@ -21,22 +23,31 @@ namespace ShareImageHw.Web.Controllers
             return View();
         }
 
-        public IActionResult Upload(IFormFile image, string password)
+        public IActionResult Upload(IFormFile imageFile, string password)
         {
-            var fileName = Path.Combine(_webHostEnvironment.WebRootPath, "Uploads", $"{Guid.NewGuid}-{image.FileName}");
+            var fileName = Path.Combine(_webHostEnvironment.WebRootPath, "Uploads", $"{Guid.NewGuid}-{imageFile.FileName}");
 
 
             using FileStream fs = new(fileName, FileMode.Create);
-            image.CopyTo(fs);
+            imageFile.CopyTo(fs);
 
             ImageRepo repo = new(_connectionString);
-            var vm = new UploadViewModel { FileName=fileName, Password=password};
 
-            repo.AddImage(new()
+            var id = repo.AddImage(new()
             {
-                Path=fileName,
-                Password=password
+                Path = fileName,
+                Password = password
             });
+
+            var vm = new UploadViewModel { Id = id, Password = password };
+            return View(vm);
+        }
+
+        public IActionResult ViewImage(int Id)
+        {
+            ImageRepo repo = new(_connectionString);
+            var vm = new ViewImageViewModel { Image=repo.GetImageById(Id)};
+
             return View(vm);
         }
     }

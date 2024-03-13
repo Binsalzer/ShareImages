@@ -24,16 +24,16 @@ namespace ShareImageHw.Data
             _connection = connection;
         }
 
-        public void AddImage(Image image)
+        public int AddImage(Image image)
         {
             SqlConnection con = new(_connection);
             var cmd = con.CreateCommand();
             cmd.CommandText = @"INSERT INTO Images
-                                VALUES (@path, @password, 0)";
+                                VALUES (@path, @password, 0) SELECT SCOPE_IDENTITY()";
             cmd.Parameters.AddWithValue("@path", image.Path);
             cmd.Parameters.AddWithValue("@password", image.Password);
             con.Open();
-            cmd.ExecuteNonQuery();
+            return (int)(decimal) cmd.ExecuteScalar();
         }
 
         public Image GetImageById(int id)
